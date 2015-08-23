@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+img{border-style:none;}
+
+.imgbox{width:100%;}
+.imgbox img{width:100%;}
+.imgbox ul{list-style-type:none;margin:0px;padding:0px;}
+.imgbox ul li{display:none;}
+.title_bg{z-index:1;background-color:#000;filter:alpha(opacity=30);-moz-opacity:0.3;opacity:0.3;}
+.title{z-index:2;color:#FFF;text-indent:10px;font-size:14px;line-height:40px;}
+.pager{z-index:3;}
+.common{position:relative;height:40px;margin-top:-43px;}
+.pager ul{margin-top:5px;}
+.pager ul li{float:right;color:#FFF;font-size:15px;display:block;border:2px solid #e5eaff;width:25px;height:25px;margin-right:4px;margin-top:5px;text-align:center;line-height:25px;background-color:#6f4f67;cursor:pointer;}

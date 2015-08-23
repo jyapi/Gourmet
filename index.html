@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Restaurant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="themes/Mytheme.css" />
+    <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="changepicture.js"></script>
+    <script> <!--javascript for save profile-->
+    function save(){
+		var id= document.getElementById("account").value;
+		var contact = new Object;
+		contact.FirstName= document.getElementById("User_fname").value;
+		contact.lastName= document.getElementById("User_lname").value;
+		contact.phone= document.getElementById("phone").value;
+		contact.email=document.getElementById("email").value;
+		contact.address= document.getElementById("address").value;
+		var str=JSON.stringify(contact);
+		localStorage.setItem(id,str);
+		document.getElementById("result").innerHTML="Information has been Update!";
+		}
+		function find(){
+			save();
+			var id=document.getElementById("account").value;
+			var str = localStorage.getItem(id);
+			var contact = JSON.parse(str);
+			document.getElementById("name1").innerHTML=contact.FirstName;
+			document.getElementById("name2").innerHTML=contact.lastName;
+			document.getElementById("phone1").innerHTML= contact.phone;
+			document.getElementById("email1").innerHTML=contact.email;
+			document.getElementById("add1").innerHTML= contact.address;			
+			}
+    
+    </script>
+    <script><!--javascript for save order-->
+    function saveOrder(m){	
+		var Order = new Object;
+		Order.Name= m ;
+		Order.type= document.getElementById("type").value;
+		Order.qty= document.getElementById("qty").value;		
+		var str=JSON.stringify(Order);
+		localStorage.setItem(Order.Name,str);
+		document.getElementById("result").innerHTML="Sucessfully add to cart!";
+		}
+		
+	function findOrder(){
+				
+		var list = document.getElementById("list");	
+ 		if (localStorage.length>0){
+			var result="<table border:2px dashed #ccc >";
+			result += "<tr><td>Product</td><td> Quantity</td><td>Price</td><td>Sub Total</td></tr>";
+			var total=0;
+			for(var i=0; i<localStorage.length; i++){
+				var product =localStorage.key(i);
+				var str = localStorage.getItem(product);
+				var Order = JSON.parse(str);
+				var type = Order.type;
+				var price = "8";
+				if(type=="small"||type=="Small"){
+					price = "8";
+					}
+					if(type=="Reg"||type=="reg"){
+						price="10";
+						}
+						if(type=="Big"||type=="big"){
+							price="12";
+							}
+				result += "<tr><td>" + Order.Name+ "</td><td>" + Order.qty+"</td><td>"+ price+"</td><td>"+ parseInt(Order.qty)*parseInt(price)+"</td></tr>";
+			total = total+ parseInt(Order.qty)*parseInt(price);
+				}
+				result += "<tr><td></td><td></td><td></td><td>"+ total+"</td></tr>";
+				result +="</table>";
+				list.innerHTML=result;				
+			}
+			else{
+				list.innerHTML="There are no Item, please add somthing!"
+				}
+			}
+		function removeOrder(){				
+		 for(var i=0; i<localStorage.length; i++){
+				var product =localStorage.key(i);
+				var str = localStorage.removeItem(product);
+				}
+		  document.getElementById("list").innerHTML="The Booking has been canceled!"
+		  }
+      
+    </script>
+    </head>
+
+    <body>
+<!--first page start-->
+<section id="page1" data-role="page" data-add-back-btn="true" data-theme="d" > 
+      <!--input header information-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!--input for content-->
+      <div data-role="content" class="content" style="padding:0px;"  > 
+    <!--input for picture-->
+    <div class="tab1"> 
+          <!--input for picture-->
+          <div class="imgbox">
+        <ul>
+              <li style="display: block;" title="Feature"><a href="#f1"> <img src="image/f1.jpg" /></a></li>
+              <li title="feature"><a href="#f2"> <img src="image/f2.jpg" /></a></li>
+              <li title="feature"><a href="#f3"> <img src="image/f3.jpg" /></a></li>
+              <li title="feature"><a href="#f4"> <img src="image/f4.jpg" /></a></li>
+            </ul>
+        <!--input for picture title-->
+        <div class="title_bg common"></div>
+        <div class="title common"></div>
+        <div class="pager common">
+              <ul>
+            <li>4</li>
+            <li>3</li>
+            <li>2</li>
+            <li style="background: #FF70Ad;">1</li>
+          </ul>
+            </div>
+      </div>
+        </div>
+    <!--input for menu-->
+    <div class="tab2">
+          <nav data-role="navbar">
+        <ul>
+              <li><a href="#page2" data-icon="heart"  >Recommended dishes</a></li>
+              <li><a href="#page3" data-icon="cloud" >Restaurant reservatons</a></li>
+              <li><a href="#page4" data-icon="grid"  >Menu</a></li>
+              <li><a href="#page5" data-icon="user" >Profile</a></li>
+              <li><a href="#page8" data-icon="delete">Cancel Booking</a></li>
+              <li><a href="#page9"  data-icon="gear"  >Setting</a></li>
+            </ul>
+      </nav>
+        </div>
+  </div>
+    </section>
+<!--end of page1--> 
+
+<!--start of page2-->
+<section id="page2" data-role="page" data-add-back-btn="true" data-theme="d"> 
+      <!--input header information-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!--input for content-->
+      <div data-role="content" class="content">
+    <h1> Chef's recommendation</h1>
+    <!--input for first part-->
+    <div class="ui-grid-a"> 
+          <!--input for picture1-->
+          <div class="ui-block-a" > <span > <a href="#m7" ><img src="image/m7.jpg" style="width:90%;" /></a> </span>
+        <div class="title_bg common" style="width:90%;"> </div>
+        <div class="title common" style="width:90%;"></div>
+      </div>
+          <!--input for picture2-->
+          <div class="ui-block-b" > <span><a href="#c1"><img src="image/c1.jpg" style="width:90%;" /></a></span>
+        <div class="title_bg common" style="width:90%;"></div>
+        <div class="title common" style="width:90%;"></div>
+      </div>
+        </div>
+    <br>
+    <br>
+    <!--input for second part-->
+    <div class="ui-grid-a"> 
+          <!--input for picture3-->
+          <div class="ui-block-a" > <span ><a href="#m13"><img src="image/m13.jpg" style="width:90%;" /></a> </span>
+        <div class="title_bg common" style="width:90%;"></div>
+        <div class="title common" style="width:90%;"></div>
+      </div>
+          <!--input for picture4-->
+          <div class="ui-block-b" > <span><a href="#c2"><img src="image/c2.jpg" style="width:90%;" /></a> </span>
+        <div class="title_bg common" style="width:90%;"></div>
+        <div class="title common" style="width:90%;"></div>
+      </div>
+        </div>
+  </div>
+    </section>
+<!--end of page2--> 
+
+<!--start of page3-->
+<section id="page3" data-role="page" data-add-back-btn="true" data-theme="d"> 
+      <!--input header information-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!--input for content-->
+      <div data-role="content" class="content"> 
+    <!--input for first part-->
+    <div class="ui-grid-a" id="restau_infos">
+          <div class="ui-block-a">
+        <h1> Gourmet</h1>
+        <p><strong> Oishii Japan</strong></p>
+        <div style="font-size:14px;"> 73 Yarra St<br>
+              Geelong VIC 3220 <br>
+            </div>
+        <div style="color:blue; font-size:11px;"> Open today<br>
+              12:00 - 3:00 pm<br>
+              6:00 - 10:15pm </div>
+      </div>
+          <div class="ui-block-b">
+        <p><img src="image/r1.jpg" alt="jeannette photo" style="width:100%"/></p>
+        <p><a href="http://www.google.fr" rel="external" data-role="button"> See our website</a></p>
+      </div>
+        </div>
+    <!-- /grid-a -->
+    <hr/>
+    <!--input for second part-->
+    <div class="ui-grid-a" id="contact_infos">
+          <div class="ui-block-a">
+        <h2> Contact us</h2>
+        <p>73 Yarra ST</p>
+        <p> 3220 VIC </p>
+      </div>
+          <div class="ui-block-b"> <img src="image/map1.jpg" alt="plan jeanette" style="width:100%"/> </div>
+        </div>
+    <!-- /grid-a -->
+    <div id="contact_buttons"> <a href="https://www.google.com.au/maps/place/Oishii+Japan/@-38.149427,144.3625698,19z/data=!4m7!1m4!3m3!1s0x6ad4141c04c11da5:0x8ab4def2da688694!2sOishii+Japan!3b1!3m1!1s0x6ad4141c04c11da5:0x8ab4def2da688694?hl=en" data-role="button" data-icon="maps"> Find us on Google Maps </a> <a href="tel:0452453228"  data-role="button" data-icon="tel"> Call us </a> </div>
+    <hr/>
+    <!--input for rate-->
+    <div id="notation">
+          <form>
+        <label for="select-choice-0" class="select">
+        <h2> User rating </h2>
+        </label>
+        <select name="note_utilisateur" id="note_utilisateur" data-native-menu="false" data-theme="c" >
+              <option value="one" class="one"> Not good at all </option>
+              <option value="two" class="two">Average </option>
+              <option value="three" class="three">Pretty good </option>
+              <option value="four" class="four"> Excellent </option>
+            </select>
+      </form>
+        </div>
+  </div>
+    </section>
+<!--end of page3--> 
+
+<!--start of page4-->
+<section id="page4" data-role="page"  data-add-back-btn="true" data-theme="d"> 
+      <!--input header information-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!--input for content-->
+      <div data-role="content" class="content">
+    <h1> What would you'd like to eat? </h1>
+    <!--input for menu1-->
+    <div data-role="collapsible">
+          <h3>Rice Bowl </h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#c2" data-transition="slidedown"> <img src="image/c2.jpg"/>
+          <h3>Pork</h3>
+          </a></li>
+        <li><a href="#m1" data-transition="slidedown"> <img src="image/m1.jpg"/>
+          <h3>Chicken Katsu</h3>
+          </a></li>
+        <li><a href="#m2" data-transition="slidedown"> <img src="image/m2.jpg"/>
+          <h3>Chicken Karaage</h3>
+          </a></li>
+        <li><a href="#m3" data-transition="slidedown"> <img src="image/m3.jpg"/>
+          <h3>Pork Karaage</h3>
+          </a></li>
+      </ul>
+        </div>
+    <!--input for menu2-->
+    <div data-role="collapsible">
+          <h3>Udon </h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#m4" data-transition="slidedown"> <img src="image/m4.jpg"/>
+          <h3>Ontama Undo</h3>
+          </a></li>
+        <li><a href=#"m5" data-transition="slidedown"> <img src="image/m5.jpg"/>
+          <h3>Vegetable Undo</h3>
+          </a></li>
+        <li><a href="#m6" data-transition="slidedown"> <img src="image/m6.jpg"/>
+          <h3>Curry Undo</h3>
+          </a></li>
+      </ul>
+        </div>
+    <!--input for menu3-->
+    <div data-role="collapsible">
+          <h3>Salmon </h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#m7" data-transition="slidedown"> <img src="image/m7.jpg"/>
+          <h3>Salmon</h3>
+          </a></li>
+        <li><a href="#m8" data-transition="slidedown"> <img src="image/m8.jpg"/>
+          <h3>Combon</h3>
+          </a></li>
+        <li><a href="#c3" data-transition="slidedown"> <img src="image/c3.jpg"/>
+          <h3>Speical Salmon</h3>
+          </a></li>
+        <li><a href="#f2" data-transition="slidedown"> <img src="image/f2.jpg"/>
+          <h3>Suishi Roll</h3>
+          </a></li>
+        <li><a href="#f4" data-transition="slidedown"> <img src="image/f4.jpg"/>
+          <h3>Cooked Salmon</h3>
+          </a></li>
+      </ul>
+        </div>
+    <!--input for menu4-->
+    <div data-role="collapsible">
+          <h3>Salad & Sidekicks</h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#m9" data-transition="slidedown"> <img src="image/m9.jpg"/>
+          <h3>fuirt Salad</h3>
+          </a></li>
+        <li><a href="#m10" data-transition="slidedown"> <img src="image/m10.jpg"/>
+          <h3>Veg salad</h3>
+          </a></li>
+        <li><a href="#m11" data-transition="slidedown"> <img src="image/m11.jpg"/>
+          <h3>Spring roll</h3>
+          </a></li>
+        <li><a href="#f3" data-transition="slidedown"> <img src="image/f3.jpg"/>
+          <h3>Steamed Bun</h3>
+          </a></li>
+      </ul>
+        </div>
+    <!--input for menu5-->
+    <div data-role="collapsible">
+          <h3>Drink & Dessert</h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#c1" data-transition="slidedown"> <img src="image/c1.jpg"/>
+          <h3>Dessert</h3>
+          </a></li>
+        <li><a href="#f1" data-transition="slidedown"> <img src="image/f1.jpg"/>
+          <h3>Strawberry cake</h3>
+          </a></li>
+        <li><a href=#"m12" data-transition="slidedown"> <img src="image/m12.jpg"/>
+          <h3>Drinks</h3>
+          </a></li>
+      </ul>
+        </div>
+    <!--input for menu6-->
+    <div data-role="collapsible">
+          <h3>Other</h3>
+          <ul data-role="listview" data-inset="true" >
+        <li><a href="#m13" data-transition="slidedown"> <img src="image/m13.jpg"/>
+          <h3>Veggie Croquette</h3>
+          </a></li>
+        <li><a href="#c6" data-transition="slidedown"> <img src="image/c6.jpg"/>
+          <h3>Fruit dish</h3>
+          </a></li>
+      </ul>
+        </div>
+  </div>
+    </section>
+<!--end od page4--> 
+
+<!-- start of page5-->
+<section id="page5" data-role="page" data-add-back-btn="true" data-theme="d" > 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Profile</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" class="content"> 
+    <!-- input for profile-->
+    <div id="profile"></div>
+    <table style="border:2px dashed #ccc;width:100%">
+          <tr>
+        <td>Account : </td>
+        <td id="account">01232312</td>
+      </tr>
+          <tr>
+        <td>Account : </td>
+        <td id="name1"></td>
+      </tr>
+          <tr>
+        <td>Last Name : </td>
+        <td id="name2"></td>
+      </tr>
+          <tr>
+        <td>Phone :</td>
+        <td id="phone1"></td>
+      </tr>
+          <tr>
+        <td>E-mail :</td>
+        <td id= "email1"></td>
+      </tr>
+          <tr>
+        <td>Address :</td>
+        <td id="add1"></td>
+      </tr>
+          <tr>
+        <td>Order :</td>
+        <td id="order1"></td>
+      </tr>
+        </table>
+    <br>
+    <a href="#page6" data-role="button" > Update </a> <a href="#page1" data-role="button"> Done </a> </div>
+    </section>
+<!-- start of page6-->
+<section id="page6" data-role="page" data-add-back-btn="true" data-theme="d"> 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Profile</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" class="content"> 
+    <!-- input for information-->
+    <div style="border:2px dashed #ccc;">
+          <label for="User_fname" > First Name:</label>
+          <input type="text" id="User_fname" name="User_fname" class="text"/>
+          <label for="User_lname" > Last Name:</label>
+          <input type="text" id="User_lname" name="User_lname" class="text"/>
+          <label for="phone" > Phone:</label>
+          <input type="text" id="phone" name="phone" class="text"/>
+          <label for="email" > E-mail:</label>
+          <input type="text" id="email" name="email" class="text"/>
+          <label for="address" > Address:</label>
+          <input type="text" id="address" name="address" class="text"/>
+          <br>
+          <a onClick="find()" href="#page5" data-role="button" >Submit </a> </div>
+  </div>
+    </section>
+<!-- end of page6--> 
+<!-- end of page 5--> 
+
+<!--start of page7--> 
+<!--start of pagec1-->
+<section id="c1" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/c1.jpg" style="width:100%" id="c1"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Dessert</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Dessert')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--start of pagec1--> 
+
+<!-- start of page8-->
+<section id="page8" data-role="page" data-add-back-btn="true" onLoad="findOrder()" data-theme="d" >
+      <header data-role="header" data-position="fixed"> 
+    <!-- input for header-->
+    <h1>Gourmet</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" style="padding:0px;" class="content">
+    <h1>Order Information</h1>
+    <div id="list" style="width:100%"></div>
+    <a href="#page12" type="button" >Submit</a> <a href="#page1" type="button"  onClick="removeOrder()">Cancel</a> </div>
+    </section>
+<!-- end of page8--> 
+<!-- start of page 12-->
+<section id="page12" data-role="page" data-add-back-btn="true" data-theme="d" > 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" class="content">
+    <h2>Name:</h2>
+    <br>
+    <input type="text" id="name">
+    <br>
+    <h2>Phone:</h2>
+    <br>
+    <input type="text" id="contact">
+    <br>
+    <h4 style="color:red;">we only accept online payment</h4>
+    <br>
+    <h2>Credit card Number:</h2>
+    <br>
+    <input type="text" id="feadback">
+    <br>
+    <h2>Card Holder Name:</h2>
+    <br>
+    <input type="text" id="feadback">
+    <br>
+    <h2>Signture:</h2>
+    <br>
+    <input type="text" id="feadback">
+    <br>
+    <a href="#page1"  data-role="button" > Submit </a> </div>
+    </section>
+<!-- end of page 12--> 
+<!-- end of page 7--> 
+
+<!-- start of page 9-->
+<section id="page9" data-role="page" data-add-back-btn="true"  data-theme="d"> 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" class="content">
+    <h2>About Us</h2>
+    <div>This Application was done for Oishii resturant where I worked before. If you have any questiones, please contact me.</div>
+    <a data-role="button" href="#page10" data-rel="dialog" value="Contact us">Contact us</a> <a data-role="button" href="#page11" data-rel="dialog" value="Feedback" >Feedback</a> </div>
+      <h2>Statement : </h2>
+      All pictures of this web app are from website www.baidu.com .<br>
+      <br>
+      <p style="font-size:14px;"> "©Deakin University, School of Information Technology. This web app has been developed as a student assignment for the unit SIT313: Mobile computing. Therefore it is not part of the University's authorised web site. DO NOT USE THE INFORMATION CONTAINED ON THIS WEB PAGE IN ANY WAY."</p>
+      <br>
+      <br>
+    </section>
+<!-- start of page 10-->
+<section id="page10" data-role="page" data-add-back-btn="true"  data-theme="d"> 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!-- input for content-->
+      <div data-role="content" class="content"> <a href="www.google.com"  data-role="button" data-icon="email"> E-mail </a> <a href="tel:0388161072"  data-role="button" data-icon="tel"> Call us </a> </div>
+    </section>
+<!-- start of page 11-->
+<section id="page11" data-role="page" data-add-back-btn="true" data-theme="d" > 
+      <!-- input for header-->
+      <header data-role="header" data-position="fixed">
+    <h1>Gourmet</h1>
+  </header>
+      <!-- input forcontent-->
+      <div data-role="content" class="content">
+    <h2>Customer Name:</h2>
+    <br>
+    <input type="text" id="name">
+    <br>
+    <h2> Contact Information:</h2>
+    <br>
+    <input type="text" id="contact">
+    <br>
+    <h2>Feedback :</h2>
+    <br>
+    <input type="text" id="feadback">
+    <br>
+    <a href="#page1"  data-role="button" > Submit </a> </div>
+    </section>
+<!--end of page 9--> 
+<!--start of pagec2-->
+<section id="c2" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/c2.jpg" style="width:100%" id="c2"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Pork</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Pork')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagec2--> 
+<!--start of pagec3-->
+<section id="c3" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/c3.jpg" style="width:100%" id="c3"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Speical Salmon</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Speical Salmon')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagec3--> 
+<!--start of pagec6-->
+<section id="c6" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/c6.jpg" style="width:100%" id="c6"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Fruit dish</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Fruit dish')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagec6--> 
+<!--start of pagef1-->
+<section id="f1" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/f1.jpg" style="width:100%" id="f1"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Strawberry cake</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Strawberry cake')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagef1--> 
+<!--start of pagef2-->
+<section id="f2" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/f2.jpg" style="width:100%" id="f2"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Suishi Roll</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Suishi Roll')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagef2--> 
+<!--start of pagef3-->
+<section id="f3" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/f3.jpg" style="width:100%" id="f3"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Steamed Bun</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Steamed Bun')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagef3--> 
+<!--start of pagef4-->
+<section id="f4" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/f4.jpg" style="width:100%" id="f4"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Cooked Salmon</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Cooked Salmon')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagef4--> 
+<!--start of pagem1-->
+<section id="m1" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m1.jpg" style="width:100%" id="m1"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Chicken Katsu</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Chicken Katsu')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem1--> 
+<!--start of pagem2-->
+<section id="m2" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m2.jpg" style="width:100%" id="m2"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Chicken Karaage</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Chicken Karaage')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem2--> 
+<!--start of pagem3-->
+<section id="m3" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m3.jpg" style="width:100%" id="m3"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Pork Karaage</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Pork Karaage')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem3--> 
+
+<!--start of pagem4-->
+<section id="m4" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m4.jpg" style="width:100%" id="m4"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Ontama Undo</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Ontama Undo')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem4--> 
+<!--start of pagem5-->
+<section id="m5" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m5.jpg" style="width:100%" id="m5"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Vegetable Undo</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Vegetable Undo')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem5--> 
+<!--start of pagem6-->
+<section id="m6" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m6.jpg" style="width:100%" id="m6"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Curry Undo</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Curry Undo')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem6--> 
+<!--start of pagem7-->
+<section id="m7" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m7.jpg" style="width:100%" id="m7"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Salmon</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Salmon')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem7--> 
+<!--start of pagem8-->
+<section id="m8" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m8.jpg" style="width:100%" id="m8"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Combon</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Combon')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem8--> 
+<!--start of pagem9-->
+<section id="m9" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m9.jpg" style="width:100%" id="m9"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">fuirt Salad</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('fuirt Salad')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem9--> 
+<!--start of pagem10-->
+<section id="m10" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m10.jpg" style="width:100%" id="m10"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Veg salad</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Veg salad')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem10--> 
+<!--start of pagem11-->
+<section id="m11" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m11.jpg" style="width:100%" id="m11"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Spring roll</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Spring roll')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem11--> 
+<!--start of pagem12-->
+<section id="m12" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m12.jpg" style="width:100%" id="m12"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Drinks</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Drinks')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem12--> 
+<!--start of pagem13-->
+<section id="m6" data-role="page" data-add-back-btn="true" data-theme="d">
+<!-- input for header-->
+<header data-role="header" data-position="fixed">
+      <h1>Gourmet</h1>
+      <a href="#page3" type="button" >View resturant</a> <a href="#page8" data-icon="shopping-cart" onClick="findOrder()">My Cart</a> </header>
+<!-- input for content-->
+<div data-role="content" style="padding:0px;" class="content">
+<!-- input for imag-->
+<div class="picture"> <img src="image/m13.jpg" style="width:100%" id="m13"/> </div>
+<div>
+      <table style="width:100%; border:solid;">
+    <tr style="border:dotted;" >
+          <td id="product1">Veggie Croquette</td>
+        </tr>
+    <tr>
+          <td style="" >Small</td>
+          <td>8.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Reg</td>
+          <td>10.00 $</td>
+        </tr>
+    <tr>
+          <td style="" >Big</td>
+          <td>12.00 $</td>
+        </tr>
+  </table>
+    </div>
+<!-- input for footer-->
+<footer data-role="footer" data-position="fixed" >
+<div class="ui-grid-b">
+      <table style="width:100%">
+    <tr>
+          <td >Type:
+        <input type="text" id="type"></td>
+          <td >Qty:
+        <input type="text" id="qty"></td>
+        </tr>
+  </table>
+      <a data-role="button" href="#" onClick="saveOrder('Veggie Croquette')" value="Add" style="width:100%">Add</a>
+      <div id="result" ></div>
+      </footer>
+    </div>
+</section>
+<!--end of pagem13-->
+
+</body>
+</html>
